@@ -16,7 +16,7 @@ handle_repo() {
         git clone "$remote_repo" "$repo_name"
     else
         cd "$local_path"
-        git pull
+        # git pull
     fi
 }
 
