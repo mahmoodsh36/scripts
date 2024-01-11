@@ -2,6 +2,7 @@
 # script to setup dotfiles and (possibly) more
 
 homedir=/home/mahmooz #"$HOME", im using a different variable than the standard for no good reason
+export HOME="$homedir" 
 
 handle_repo() {
     remote_repo="$1"
@@ -20,7 +21,7 @@ handle_repo() {
 }
 
 handle_repo "https://github.com/mahmoodsheikh36/dotfiles" "$homedir/work"
-HOME="$homedir" source "$homedir/work/dotfiles/restore.sh"
+source "$homedir/work/dotfiles/restore.sh"
 handle_repo "https://github.com/mahmoodsheikh36/awesome" "$homedir/.config"
 handle_repo "https://github.com/mahmoodsheikh36/scripts" "$homedir/work"
 handle_repo "https://github.com/mahmoodsheikh36/dotfiles" "$homedir/.config"
