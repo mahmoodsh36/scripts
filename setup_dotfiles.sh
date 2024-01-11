@@ -20,7 +20,7 @@ handle_repo() {
 }
 
 handle_repo "https://github.com/mahmoodsheikh36/dotfiles" "$homedir/work"
-source "$homedir/work/dotfiles/restore.sh"
+HOME="$homedir" source "$homedir/work/dotfiles/restore.sh"
 handle_repo "https://github.com/mahmoodsheikh36/awesome" "$homedir/.config"
 handle_repo "https://github.com/mahmoodsheikh36/scripts" "$homedir/work"
 handle_repo "https://github.com/mahmoodsheikh36/dotfiles" "$homedir/.config"
