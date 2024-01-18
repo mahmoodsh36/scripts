@@ -3,6 +3,7 @@
 
 musicdir="$1"
 [ -z "$musicdir" ] && musicdir="$HOME/music"
+cd "$musicdir"
 find -mindepth 2 -type d | while read album;
 do                                                  
     if [ ! -f "$album/cover.jpg" ]; then
@@ -12,4 +13,4 @@ do
         echo doing "$first_track"                            
         ffmpeg -nostdin -i "$first_track" -an -vcodec copy "$cover_path"
     fi
-done 2&>1 > /dev/null
+done > /dev/null 2>&1
