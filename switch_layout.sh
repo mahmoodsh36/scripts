@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # switch_layout.sh - switch between us, il, ar keyboard layouts on xorg
 
 layouts="us\nil\nara"

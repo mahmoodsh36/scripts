@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/env sh
 
 get_tx() {
     cat /sys/class/net/wlan0/statistics/tx_bytes

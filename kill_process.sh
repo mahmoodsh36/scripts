@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # kill a running process using rofi
 
 process_name=$(ps -e | awk '{ print $4 }' | sort -u | rofi -dmenu -p program -i)

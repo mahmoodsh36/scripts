@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/env sh
 
 program=$(pacman -Ssq | rofi -dmenu -p 'program')
 [ -z "$program" ] && exit
