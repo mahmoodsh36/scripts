@@ -10,6 +10,6 @@ mkdir -p "$BRAIN_DIR/resources/epubs" 2>/dev/null
 N=10
 for file in "$BRAIN_DIR/resources/"*.pdf; do
   ((i=i%N)); ((i++==0)) && wait
-  export -f echoFooBar
+  export -f handle_file
   timeout 180s sh -c "handle_file '$1'" &
 done
