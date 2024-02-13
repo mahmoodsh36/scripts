@@ -10,5 +10,5 @@ mkdir -p "$BRAIN_DIR/resources/epubs" 2>/dev/null
 N=10
 for file in "$BRAIN_DIR/resources/"*.pdf; do
   ((i=i%N)); ((i++==0)) && wait
-  handle_file "$file" &
+  timeout 180 handle_file "$file" &
 done
