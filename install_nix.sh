@@ -14,6 +14,7 @@ sudo mkdir /mnt 2>/dev/null
 # incase there are leftovers from a previous run
 sudo umount /mnt/boot 2>/dev/null
 sudo umount /mnt/ 2>/dev/null
+swapoff -a
 
 # prepare the drive
 parted "$drive" mklabel gpt
@@ -36,9 +37,6 @@ mount "$root_partition" /mnt || exit
 mkdir /mnt/boot 2>/dev/null
 mount "$boot_partition" /mnt/boot || exit
 swapon "$swap_partition"
-
-# nobody needs swap
-# swapoff -L label
 
 # generate config (we need the hardware-configuration.nix file that is generated)
 mkdir -p /mnt/etc/
