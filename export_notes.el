@@ -11,7 +11,8 @@
   (elpaca-wait)
   (map-dir-files (format "%s/notes/" (getenv "BRAIN_DIR"))
                  (list (lambda ()
-                         (message "file: %s\n" buffer-file-name)
-                         (export-file buffer-file-name :pdf-p t)
+                         (ignore-errors
+                           (message "file: %s\n" buffer-file-name)
+                           (export-file buffer-file-name :pdf-p t))
                          ))
                  "\.org$"))
