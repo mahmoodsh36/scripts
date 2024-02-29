@@ -10,4 +10,4 @@
   (require 'setup-org)
   (require 'setup-packages) ;; for ox-hugo
   (elpaca-wait)
-  (export-all-org-files))
+  (export-all-org-files-to-html-and-pdf))
