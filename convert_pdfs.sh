@@ -9,7 +9,7 @@ for file in "$BRAIN_DIR/resources/"*.pdf; do
       newfile="$(basename "$file")"
       newfile="${newfile%.pdf}.epub"
       newfile_fullpath="$BRAIN_DIR/resources/epubs/$newfile"
-      if [ ! -f "$newfile_fullpath" ] && (
+      [ ! -f "$newfile_fullpath" ] && (
         ebook-convert "$file" hu_"$newfile_fullpath" --enable-heuristics && echo "$newfile"
         ebook-convert "$file" nohu_"$newfile_fullpath" && echo "$newfile"
       )
