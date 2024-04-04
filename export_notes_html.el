@@ -6,6 +6,7 @@
   (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
   (require 'setup-constants)
   (require 'setup-utils)
+  (require 'setup-android)
   (require 'setup-elpaca)
   (require 'setup-org)
   (require 'setup-packages) ;; for ox-hugo
