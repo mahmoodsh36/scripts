@@ -10,5 +10,6 @@
   (require 'setup-elpaca)
   (require 'setup-org)
   (require 'setup-packages) ;; for ox-hugo
+  (require 'setup-blk)
   (elpaca-wait)
   (export-all-org-files-to-html-and-pdf))

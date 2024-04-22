@@ -9,6 +9,7 @@
   (require 'setup-android)
   (require 'setup-elpaca)
   (require 'setup-org)
+  (require 'setup-blk)
   (elpaca-wait)
   (map-dir-files (format "%s/notes/" (getenv "BRAIN_DIR"))
                  (list (lambda ()
