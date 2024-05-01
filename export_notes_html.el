@@ -12,4 +12,4 @@
   (require 'setup-packages) ;; for ox-hugo
   (require 'setup-blk)
   (elpaca-wait)
-  (export-all-org-files-to-html-and-pdf))
+  (export-all-org-files :html-p t))
