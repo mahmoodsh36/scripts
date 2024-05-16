@@ -9,7 +9,7 @@
   (require 'setup-android)
   (require 'setup-elpaca)
   (require 'setup-org)
-  (require 'setup-packages) ;; for ox-hugo
+  (require 'setup-packages)
   (require 'setup-blk)
   (elpaca-wait)
   (export-all-org-files :html-p t))
