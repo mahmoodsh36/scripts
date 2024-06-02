@@ -4,8 +4,8 @@
       (org-startup-with-inline-images nil) ;; to avoid errors
       (warning-minimum-level :emergency)) ;; reduce warnings
   (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
-  (require 'setup-constants)
   (require 'setup-utils)
+  (require 'setup-constants)
   (require 'setup-android)
   (require 'setup-elpaca)
   (require 'setup-org)
