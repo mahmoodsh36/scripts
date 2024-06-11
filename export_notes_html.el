@@ -12,4 +12,4 @@
   (require 'setup-packages)
   (require 'setup-blk)
   (elpaca-wait)
-  (export-all-org-files :html-p t))
+  (export-all-org-files-to-html))
