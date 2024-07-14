@@ -6,9 +6,9 @@
 unique_file() {
   name=$1
   ext=$2
-  if [[ -e "$name.$ext" || -L "$name.$ext" ]] ; then
+  if [[ -e "$name.$ext" || -L "$name.$ext" ]]; then
     i=0
-    while [[ -e "$name-$i.$ext" || -L "$name-$i.$ext" ]] ; do
+    while [[ -e "$name-$i.$ext" || -L "$name-$i.$ext" ]]; do
       let i++
     done
     name=$name-$i
@@ -20,5 +20,5 @@ unique_file() {
 # [ ! -z "$2" ] && ext="$2"
 ext="$2"
 filename="$1"
-[ -z "$filename" ] && filename=my_unique
+[ -z "$filename" ] && filename=$my_unique
 unique_file "$filename" "$ext"
