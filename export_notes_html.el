@@ -11,5 +11,6 @@
   (require 'setup-org)
   (require 'setup-packages)
   (require 'setup-blk)
+  (require 'setup-packages)
   (elpaca-wait)
   (export-all-org-files-to-html))
