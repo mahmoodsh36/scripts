@@ -12,7 +12,7 @@ case "$mime" in
     zaread "$file"
     ;;
   video/*)
-    mpv "$file"
+    mympv.sh "$file"
     ;;
   image/*)
     sxiv "$file"
