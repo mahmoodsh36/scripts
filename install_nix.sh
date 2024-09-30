@@ -2,6 +2,8 @@
 
 # ./install_nix.sh /dev/nvme0n1
 # the script tries to clone my nixos, so needs internet, for now atleast
+#
+# if we're running as root why sudo?
 
 drive="$1"
 
@@ -41,12 +43,24 @@ swapon "$swap_partition"
 # generate config (we need the hardware-configuration.nix file that is generated)
 mkdir -p /mnt/etc/
 cd /mnt/etc/
-git clone https://github.com/mahmoodsheikh36/nixos
+git clone https://github.com/mahmoodsh36/nixos
+cp nixos/desktop.nix nixos/configuration.nix
 #rm nixos/hardware-configuration.nix
 nixos-generate-config --root /mnt
 
 # install nixos!
-nixos-install
+# nixos-install || exit 1
+nixos-install --impure --flake /mnt/etc/nixos/flake.nix#mahmooz || exit 1
+
+# why does this not work?
+if [ -d /home/mahmooz/work ]; then
+  echo here1
+  mkdir -p /mnt/home/mahmooz/
+  chown mahmooz:mahmooz /mnt/home/mahmooz
+  echo here2
+  rsync -Pa --exclude 'venv' /home/mahmooz/work /mnt/home/mahmooz/
+  find /mnt/home/mahmooz/work -exec chown mahmooz:users {} \;
+fi
 
 sudo umount /mnt/boot
 sudo umount /mnt/
