@@ -22,8 +22,8 @@ swapoff -a
 parted "$drive" mklabel gpt
 parted -s -a opt "$drive" mkpart myboot fat32 1MiB 261MiB
 parted -s -a opt "$drive" set 1 boot on
-parted -s -a opt "$drive" mkpart myswap ext4 261MiB 20GiB
-parted -s -a opt "$drive" mkpart myroot ext4 20GiBMiB 100%
+parted -s -a opt "$drive" mkpart myswap ext4 261MiB 36GiB
+parted -s -a opt "$drive" mkpart myroot ext4 36GiB 100%
 
 boot_partition="/dev/$(lsblk -l "$drive" | awk 'NR==3 {print $1}')"
 swap_partition="/dev/$(lsblk -l "$drive" | awk 'NR==4 {print $1}')"
