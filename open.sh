@@ -14,6 +14,9 @@ case "$mime" in
   video/*)
     mympv.sh "$file"
     ;;
+  audio/*)
+    mympv.sh "$file"
+    ;;
   image/*)
     sxiv "$file"
     ;;
