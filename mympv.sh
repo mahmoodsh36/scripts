@@ -5,4 +5,4 @@ socket_dir=$HOME/data/mpv_data/sockets
 socket_file=$(cd "$socket_dir"; unique_file.sh "mpv" "socket")
 notify-send $socket_file
 full_socket_file_path="/$socket_dir/$socket_file"
-mpv --input-ipc-server="$full_socket_file_path" "$@"; rm "$full_socket_file_path" 
+mpv --input-ipc-server="$full_socket_file_path" "$@"; rm "$full_socket_file_path"
