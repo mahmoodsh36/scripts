@@ -5,6 +5,7 @@ import subprocess
 
 MYCOMPUTERS = os.environ['MYCOMPUTERS']
 KEY = os.environ['MAIN_KEY']
+DIFF_CMD = """rsync --progress -a -n ~/brain {}:/home/mahmooz/ -e 'ssh -i ~/brain/keys/hetzner1' --exclude '.git'"""
 
 def get_local_ip():
     out = subprocess.check_output(['ip', 'addr'])
@@ -15,16 +16,17 @@ local_ip = get_local_ip()
 print(f'local ip {local_ip}')
 
 def run_remote_command(ip, cmd):
-    out = subprocess.check_output(['ssh', '-i', KEY, ip, cmd])
-    return out.decode()
+    out = subprocess.check_output(['ssh', '-i', KEY, ip, cmd]).decode()
+    out_no_newline = out[:-1]
+    return out_no_newline
 
 def get_ip_using_mac(mac):
     out = subprocess.check_output(['ip', 'neigh']).decode()
     for line in out.splitlines():
         tokens = line.split(' ')
-        if tokens[0].contains('.'): # ipv4
+        if '.' in tokens[0]: # ipv4
             if tokens[4] == mac:
-                return tokens[4]
+                return tokens[0]
 
 machines = []
 for line in MYCOMPUTERS.split('::'):
@@ -39,4 +41,6 @@ for line in MYCOMPUTERS.split('::'):
     })
 
 for machine in machines:
-    print(machine)
+    if machine['ip']:
+        out = subprocess.check_output(DIFF_CMD.format(machine['ip']), shell=True).decode()
+        print(f'{machine["name"]}: {out}')
