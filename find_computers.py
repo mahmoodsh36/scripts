@@ -13,6 +13,10 @@ MAIN_SERVER_IP = os.environ['MAIN_SERVER_IP']
 DIFF_CMD = """rsync --progress -a -n ~/brain {}:/home/mahmooz/ -e 'ssh -i ~/brain/keys/hetzner1' --exclude '.git'"""
 SSH_KEY = os.environ['MAIN_KEY']
 
+# relevant on termux perhaps (since the `ip` command isnt available)
+exclude_this_computer = True
+check_local_machines = True
+
 def get_local_ip():
     out = subprocess.check_output(['ip', 'addr'])
     matches = re.findall("inet (.*)/", out.decode())
@@ -51,11 +55,11 @@ def try_ping(hostname):
 def addr_remove_port(myaddr):
     return myaddr.split(':')[0] # get rid of port
 
-def execute_remote_ssh_cmd(addr, username, key, cmd):
+def execute_remote_ssh_cmd(addr, port, username, key, cmd):
     try:
         con = paramiko.SSHClient()
         con.load_system_host_keys()
-        con.connect(addr, username=username, key_filename=key)
+        con.connect(addr, username=username, port=22, key_filename=key)
         stdin, stdout, stderr = con.exec_command(cmd)
         out = stdout.read()
         con.close()
@@ -64,7 +68,13 @@ def execute_remote_ssh_cmd(addr, username, key, cmd):
         return None
 
 def try_ssh(hostname):
-    return execute_remote_ssh_cmd(hostname, 'mahmooz', SSH_KEY, 'ls')
+    port = hostname.split(':')[1]
+    hostname = hostname.split(':')[0]
+    if port:
+        port = int(port)
+    else:
+        port = 22
+    return execute_remote_ssh_cmd(hostname, port, 'mahmooz', SSH_KEY, 'ls')
 
 machines = []
 for line in MYCOMPUTERS.split('::'):
@@ -118,4 +128,4 @@ for machine in machines:
         if machine['ip']:
             if get_local_mac() not in machine['candidate_addresses']:
                 print(f'running on {machine["name"]},{machine["ip"]}')
-                sys.stdout.write(execute_remote_ssh_cmd(machine['ip'], 'mahmooz', SSH_KEY, sys.argv[2]))
+                sys.stdout.write(execute_remote_ssh_cmd(machine['ip'], 22, 'mahmooz', SSH_KEY, sys.argv[2]))
