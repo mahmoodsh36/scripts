@@ -67,13 +67,13 @@ def execute_remote_ssh_cmd(addr, port, username, key, cmd):
     except Exception as e:
         return None
 
-def try_ssh(hostname):
-    port = hostname.split(':')[1]
+def parse_hostname(hostname):
+    port = int(hostname.split(':')[1]) if ':' in hostname else 22
     hostname = hostname.split(':')[0]
-    if port:
-        port = int(port)
-    else:
-        port = 22
+    return hostname, port
+
+def try_ssh(hostname):
+    hostname, port = parse_hostname(hostname)
     return execute_remote_ssh_cmd(hostname, port, 'mahmooz', SSH_KEY, 'ls')
 
 machines = []
@@ -129,3 +129,14 @@ for machine in machines:
             if get_local_mac() not in machine['candidate_addresses']:
                 print(f'running on {machine["name"]},{machine["ip"]}')
                 sys.stdout.write(execute_remote_ssh_cmd(machine['ip'], 22, 'mahmooz', SSH_KEY, sys.argv[2]))
+
+    # makes sense if only one result exists
+    if job == 'ssh':
+        done = False
+        if machine['ip'] and not done:
+            if get_local_mac() not in machine['candidate_addresses']:
+                done = True
+                hostname, port = parse_hostname(machine['ip'])
+                cmd = f'ssh -i {KEY} -p {port} {hostname}'
+                print(cmd)
+                os.system(cmd)
