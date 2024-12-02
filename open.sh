@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-xdg-open "$@"
+xdg-open "$@" & disown
 
 # get_mime() {
 #   echo $(file --mime-type "$1" | rev | cut -d ':' -f1 | rev | cut -c2-)
