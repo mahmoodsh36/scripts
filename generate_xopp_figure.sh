@@ -12,13 +12,13 @@ xopp_file="$1"
 
 # check if the input file exists
 if [ ! -f "$xopp_file" ]; then
-  echo "error: File $xopp_file not found!"
+  echo "error: file $xopp_file not found!"
   exit 1
 fi
 
 # ensure xournalpp and ImageMagick are available
 if ! command -v xournalpp &> /dev/null || ! command -v convert &> /dev/null; then
-  echo "error: this script requires both xournalpp and ImageMagick (convert command)."
+  echo "error: this script requires both xournalpp and ImageMagick (convert command)"
   exit 1
 fi
 
@@ -42,24 +42,21 @@ exported_image="$temp_dir/exported.png"
 xournalpp --create-img "$exported_image" "$modified_xopp"
 if [ ! -f "$exported_image" ]; then
   echo "error: failed to export image from modified file."
-  rm -r "$temp_dir"
   exit 1
 fi
 
 # ensure the image has a transparent background (remove any black/white background)
-convert "$exported_image" -fuzz 10% -transparent black "$temp_dir/transparent.png"
+convert "$exported_image" -fuzz 10% -transparent black -trim "$temp_dir/transparent.png"
 if [ ! -f "$temp_dir/transparent.png" ]; then
-  echo "error: Failed to make the background transparent."
-  rm -r "$temp_dir"
+  echo "error: failed to make the background transparent."
   exit 1
 fi
 
-# Trim the extra background using ImageMagick
+# trim the extra background using ImageMagick
 trimmed_image="$temp_dir/trimmed.png"
 convert "$temp_dir/transparent.png" -trim "$trimmed_image"
 if [ ! -f "$trimmed_image" ]; then
   echo "error: failed to trim the image."
-  rm -r "$temp_dir"
   exit 1
 fi
 
