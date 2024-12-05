@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-# script to remove grid and set transparent background from xournal++ .xopp files, then export and trim image, requires xournalpp and ImageMagick (convert command)
+# script to remove grid and set transparent background from xournal++ .xopp files, then export and trim the image, requires xournalpp and ImageMagick (convert command)
 
 # ensure a file is provided as input
 if [ "$#" -ne 1 ]; then
@@ -31,7 +31,7 @@ cd "$temp_dir" || exit
 gunzip -c "$(basename "$xopp_file")" > extracted.xopp
 
 # modify the XML to use a "plain" background color without the grid
-sed -i 's|<background[^>]*>|<background type="solid" color="#00000000" style="plain"/>|' extracted.xopp
+sed -i 's|<background[^>]*>|<background type="solid" color="#ffffffff" style="plain"/>|' extracted.xopp
 
 # recompress the modified .xopp file
 modified_xopp="$temp_dir/modified.xopp"
@@ -45,8 +45,8 @@ if [ ! -f "$exported_image" ]; then
   exit 1
 fi
 
-# ensure the image has a transparent background (remove any black/white background)
-convert "$exported_image" -fuzz 10% -transparent black -trim "$temp_dir/transparent.png"
+# ensure the image has a transparent background (remove any white background)
+convert "$exported_image" -fuzz 10% -transparent white -trim "$temp_dir/transparent.png"
 if [ ! -f "$temp_dir/transparent.png" ]; then
   echo "error: failed to make the background transparent."
   exit 1
