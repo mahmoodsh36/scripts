@@ -3,12 +3,13 @@
 # script to remove grid and set transparent background from xournal++ .xopp files, then export and trim the image, requires xournalpp and ImageMagick (convert command)
 
 # ensure a file is provided as input
-if [ "$#" -ne 1 ]; then
-  echo "usage: $0 <path-to-xopp-file>"
+if [ "$#" -eq 0 ] || [ "$#" -gt 2 ]; then
+  echo "usage: $0 <path-to-xopp-file> [<path-to-output-png>]"
   exit 1
 fi
 
 xopp_file="$1"
+image_file="$2"
 
 # check if the input file exists
 if [ ! -f "$xopp_file" ]; then
@@ -60,5 +61,12 @@ if [ ! -f "$trimmed_image" ]; then
   exit 1
 fi
 
+final_image="$trimmed_image"
+if [ ! -z "$image_file" ]; then
+    cd - >/dev/null
+    cp "$final_image" "$image_file"
+    final_image="$image_file"
+fi
+
 # print the path to the final result
-echo "$trimmed_image"
+echo "$final_image"
