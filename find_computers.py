@@ -23,7 +23,7 @@ def get_local_ip():
     return [match for match in matches if match != "127.0.0.1"][0]
 
 def get_local_mac():
-    rx = re.compile(r"link/ether (.*) brd .*\n\s+inet",re.MULTILINE)
+    rx = re.compile(r"link/ether (.*) brd",re.MULTILINE)
     out = subprocess.check_output(['ip', 'addr']).decode()
     matches = rx.findall(out)
     return matches[0]
@@ -65,6 +65,7 @@ def execute_remote_ssh_cmd(addr, port, username, key, cmd):
         con.close()
         return out.decode()
     except Exception as e:
+        print(e)
         return None
 
 def parse_hostname(hostname):
