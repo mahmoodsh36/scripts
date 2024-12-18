@@ -4,4 +4,4 @@ cd ~/work/widgets/
 while read line
 do
   echo "$line"
-done < "${1:-/dev/stdin}" | python menu.py
+done < "${1:-/dev/stdin}" | menu.py
