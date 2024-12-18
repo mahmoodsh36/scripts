@@ -3,7 +3,7 @@
 
 process_name="$1"
 if [ -z "$process_name" ]; then
-    process_name=$(ps -e | awk '{ print $4 }' | sort -u | wofi --dmenu -p program -i)
+    process_name=$(ps -e | awk '{ print $4 }' | sort -u | dmenu.sh)
 fi
 if [ ! -z $process_name ]; then
     for process in $(ps -e | grep " $process_name$" | awk '{ print $1 }');
