@@ -4,6 +4,7 @@ import re
 import subprocess
 import sys
 import paramiko
+import time
 
 job = sys.argv[1] if sys.argv[1:] else None
 
@@ -61,6 +62,13 @@ def execute_remote_ssh_cmd(addr, port, username, key, cmd):
         con.load_system_host_keys()
         con.connect(addr, username=username, port=22, key_filename=key)
         stdin, stdout, stderr = con.exec_command(cmd)
+        timeout = 3
+        endtime = time.time() + timeout
+        while not stdout.channel.eof_received:
+            time.sleep(1)
+            if time.time() > endtime:
+                stdout.channel.close()
+                break
         out = stdout.read()
         con.close()
         return out.decode()
