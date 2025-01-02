@@ -19,7 +19,7 @@ try:
             else:
                 keys = keys + ',' + key
             if 'up(' in key:
-                cmd = f"sudo python ~/work/keys/keys.py -i '[{keys}]' --through_handler"
+                cmd = f"sudo python ~/work/keys/keys.py -i '[{keys}]' --through_daemon"
                 print(cmd)
                 subprocess.run(cmd, shell=True)
                 keys = ''
