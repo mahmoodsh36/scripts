@@ -65,7 +65,7 @@ nixos-generate-config --root /mnt
 nixos-install --impure --flake /mnt/etc/nixos/flake.nix#mahmooz || exit 1
 
 if [ -d /home/mahmooz/work ]; then
-  sudo -u mahmooz rsync -Pa --exclude venv ~/work /mnt/home/mahmooz/
+  sudo -u mahmooz rsync -Pa --exclude venv /home/mahmooz/work /mnt/home/mahmooz/
 fi
 
 umount /mnt/boot
