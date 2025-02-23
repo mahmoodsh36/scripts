@@ -68,5 +68,9 @@ if [ -d /home/mahmooz/work ]; then
   sudo -u mahmooz rsync -Pa --exclude venv /home/mahmooz/work /mnt/home/mahmooz/
 fi
 
+# it always says /mnt is busy even tho we're done, could this help?
+partprobe "$drive" || sleep 2
+udevadm settle
+
 umount /mnt/boot
 umount /mnt/
