@@ -19,7 +19,6 @@ umount /mnt/ 2>/dev/null
 swapoff -a
 
 # prepare the drive
-# parted "$drive" mklabel gpt
 sgdisk -Zg "$drive" # wipe partition table (gpt)
 sgdisk -n 1:1MiB:2048MiB -t 1:EF00 -c 1:myboot "$drive" # boot (efi)
 sgdisk -n 2:2096MiB:50GiB -t 2:8200 -c 2:myswap "$drive" # swap
@@ -30,12 +29,14 @@ partprobe "$drive" || sleep 2
 udevadm settle
 
 # label the partitions
-boot_partition="$(lsblk -o NAME,PARTLABEL -p -r "$drive" | grep myboot | cut -d ' ' -f1)"
-swap_partition="$(lsblk -o NAME,PARTLABEL -p -r "$drive" | grep myswap | cut -d ' ' -f1)"
-root_partition="$(lsblk -o NAME,PARTLABEL -p -r "$drive" | grep myroot | cut -d ' ' -f1)"
-lsblk -o NAME,PARTLABEL -p -r "$drive" 
+# boot_partition="$(lsblk -o NAME,PARTLABEL -p -r "$drive" | grep myboot | cut -d ' ' -f1)"
+# swap_partition="$(lsblk -o NAME,PARTLABEL -p -r "$drive" | grep myswap | cut -d ' ' -f1)"
+# root_partition="$(lsblk -o NAME,PARTLABEL -p -r "$drive" | grep myroot | cut -d ' ' -f1)"
+boot_partition="$(lsblk -o NAME,PARTLABEL -p -r "$drive" | awk 'NR == 3 {print $1}')"
+swap_partition="$(lsblk -o NAME,PARTLABEL -p -r "$drive" | awk 'NR == 4 {print $1}')"
+root_partition="$(lsblk -o NAME,PARTLABEL -p -r "$drive" | awk 'NR == 5 {print $1}')"
+lsblk -o NAME,PARTLABEL -p -r "$drive"
 
-# parted seems to fail to format the drives... dunno why
 if [ "$USE_BOOT" = true ]; then
   mkfs.fat -F 32 "$boot_partition"
 fi
@@ -62,7 +63,7 @@ nixos-generate-config --root /mnt
 
 # install nixos!
 # nixos-install || exit 1
-nixos-install --impure --flake /mnt/etc/nixos/flake.nix#mahmooz || exit 1
+nixos-install --impure --flake /mnt/etc/nixos/flake.nix#mahmooz1 || exit 1
 
 if [ -d /home/mahmooz/work ]; then
   sudo -u mahmooz rsync -Pa --exclude venv /home/mahmooz/work /mnt/home/mahmooz/

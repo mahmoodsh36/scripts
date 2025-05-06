@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
-cd ~/work/widgets/
 while read line
 do
   echo "$line"
-done < "${1:-/dev/stdin}" | menu.py
+done < "${1:-/dev/stdin}" | gtkpython $WORK_DIR/widgets/menu.py
