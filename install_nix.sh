@@ -20,9 +20,9 @@ swapoff -a
 
 # prepare the drive
 sgdisk -Zg "$drive" # wipe partition table (gpt)
-sgdisk -n 1:1MiB:2048MiB -t 1:EF00 -c 1:myboot "$drive" # boot (efi)
-sgdisk -n 2:2096MiB:50GiB -t 2:8200 -c 2:myswap "$drive" # swap
-sgdisk -n 0:0:0 -t 3:8300 -c 0:myroot "$drive" # root
+sgdisk -n 1:1MiB:2048MiB -t 1:EF00 -c 1:myboot1 "$drive" # boot (efi)
+sgdisk -n 2:2096MiB:50GiB -t 2:8200 -c 2:myswap1 "$drive" # swap
+sgdisk -n 0:0:0 -t 3:8300 -c 0:myroot1 "$drive" # root
 
 # we need sync disk changes so we can use 'lsblk' or other tools below
 partprobe "$drive" || sleep 2
@@ -66,12 +66,13 @@ nixos-generate-config --root /mnt
 nixos-install --impure --flake /mnt/etc/nixos/flake.nix#mahmooz1 || exit 1
 
 if [ -d /home/mahmooz/work ]; then
-  sudo -u mahmooz rsync -Pa --exclude venv /home/mahmooz/work /mnt/home/mahmooz/
+    echo copying some stuff
+    sudo -u mahmooz rsync --info=progress2 -a --exclude venv /home/mahmooz/work /mnt/home/mahmooz/
 fi
 
 # it always says /mnt is busy even tho we're done, could this help?
 partprobe "$drive" || sleep 2
 udevadm settle
-
 umount /mnt/boot
+udevadm settle
 umount /mnt/
