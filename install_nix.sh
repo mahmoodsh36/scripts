@@ -63,7 +63,7 @@ nixos-generate-config --root /mnt
 
 # install nixos!
 # nixos-install || exit 1
-nixos-install --impure --flake /mnt/etc/nixos/flake.nix#mahmooz1 || exit 1
+nixos-install --impure --flake /mnt/etc/nixos/flake.nix#mahmooz1 --no-root-password || exit 1
 
 if [ -d /home/mahmooz/work ]; then
     echo copying some stuff
