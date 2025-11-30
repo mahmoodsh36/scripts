@@ -9,12 +9,11 @@ for arg in "$@"; do
     --client-id "$SPOTIFY_CLIENT_ID"\
     --client-secret "$SPOTIFY_CLIENT_SECRET"\
     --user-auth\
-    --lyrics --add-unavailable --generate-lrc --fetch-albums --config\
-    --yt-dlp-args '--cookies-from-browser firefox'
+    --lyrics --add-unavailable --generate-lrc --fetch-albums --config
 done
 
+# --yt-dlp-args '--cookies-from-browser firefox'\
 # --cookie-file "$HOME/dl/cookies.txt"
-# --cookie-file '~/.mozilla/firefox/17f1v26k.default-release/cookies.sqlite'
 # --scan-for-songs
 # --audio youtube-music\
 # --only-verified-results\
