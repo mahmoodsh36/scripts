@@ -1,6 +1,7 @@
 # continuously record the webcam into gap-free segments (one file per
 # RECORD_SEGMENT secs). meant to run 24/7 as a service.
-# knobs: RECORD_DEVICE SIZE FPS SEGMENT OUT FALLBACK MODE (copy|vaapi|x264).
+# knobs: RECORD_DEVICE SIZE FPS SEGMENT OUT FALLBACK CRF PRESET
+#        MODE (copy|vaapi|x264|x265).
 set -euo pipefail
 
 device="${RECORD_DEVICE:-/dev/video0}"
@@ -10,7 +11,9 @@ segment="${RECORD_SEGMENT:-7200}"
 datadir="${DATA_DIR:-/data}"
 out="${RECORD_OUT:-$datadir/wc}"
 fallback="${RECORD_FALLBACK:-${HOME:-/root}/wc}"
-mode="${RECORD_MODE:-copy}"
+mode="${RECORD_MODE:-x265}"
+crf="${RECORD_CRF:-28}"
+preset="${RECORD_PRESET:-fast}"
 
 # when writing into the array, require it mounted (else files land on the root
 # fs unnoticed under an empty mountpoint). if it's not up, fall back to local
@@ -35,7 +38,10 @@ case "$mode" in
   copy)  venc=(-c:v copy) ;;
   vaapi) venc=(-vaapi_device /dev/dri/renderD128
                -vf "format=nv12,hwupload" -c:v h264_vaapi -qp 24) ;;
-  x264)  venc=(-c:v libx264 -preset ultrafast -crf 23 -pix_fmt yuv420p) ;;
+  x264)  venc=(-c:v libx264 -preset "$preset" -crf "$crf" -pix_fmt yuv420p) ;;
+  # hvc1 tag so players outside matroska accept the segments
+  x265)  venc=(-c:v libx265 -preset "$preset" -crf "$crf" -pix_fmt yuv420p
+               -tag:v hvc1 -x265-params log-level=error) ;;
   *) echo "record-loop: unknown RECORD_MODE=$mode" >&2; exit 1 ;;
 esac
 
